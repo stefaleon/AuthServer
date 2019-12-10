@@ -8,6 +8,10 @@ exports.postSignUp = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
 
+  if (!email || !password) {
+    return res.status(422).send({ error: "Email and Password are required" });
+  }
+
   User.findOne({ email }, (err, existingUser) => {
     if (err) {
       return next(err);
