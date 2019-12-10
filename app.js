@@ -3,7 +3,7 @@ const helmet = require("helmet");
 
 require("./db");
 
-// const someRoute = require("./routes/someRoute");
+const authRoutes = require("./routes/auth");
 
 const app = express();
 
@@ -23,6 +23,6 @@ app.use((req, res, next) => {
 
 app.get("/", (req, res) => res.json({ msg: "This is the Auth API" }));
 
-// app.use("/someRoute", someRoute);
+app.use(authRoutes);
 
 module.exports = app;
