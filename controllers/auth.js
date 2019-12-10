@@ -1,3 +1,5 @@
+const bcrypt = require("bcryptjs");
+
 const User = require("../models/user");
 
 exports.getSignUp = (req, res, next) => {
@@ -20,6 +22,17 @@ exports.postSignUp = (req, res, next) => {
     if (existingUser) {
       return res.status(422).send({ error: "Email is in use" });
     }
+
+    bcrypt
+      .genSalt(10)
+      .then(salt => {
+        bcrypt.hash(password, salt).then(hashedPassword => {
+          user.password = hashedPassword;
+        });
+      })
+      .catch(err => {
+        return next(err);
+      });
 
     const user = new User({
       email,
