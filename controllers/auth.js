@@ -1,6 +1,10 @@
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 const User = require("../models/user");
+const private = require("../private/private");
+
+const SECRET = process.env.SECRET || private.secret;
 
 exports.getSignUp = (req, res, next) => {
   res.send({ "response from": "getSignUp" });
@@ -36,9 +40,12 @@ exports.postSignUp = (req, res, next) => {
             if (err) {
               return next(err);
             }
-            res.json({
-              "sign-up-success": `Added user with email ${user.email}`
+
+            const token = jwt.sign({ userId: user._id }, SECRET, {
+              expiresIn: "1h"
             });
+
+            res.json({ token });
           });
         });
       })
