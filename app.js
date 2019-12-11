@@ -1,6 +1,8 @@
 const express = require("express");
 const helmet = require("helmet");
 
+const auth = require("./middleware/auth");
+
 require("./db");
 
 const authRoutes = require("./routes/auth");
@@ -21,7 +23,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get("/", (req, res) => res.json({ msg: "This is the Auth API" }));
+app.get("/", auth, (req, res) => res.json({ msg: "This is the Auth API" }));
 
 app.use(authRoutes);
 
