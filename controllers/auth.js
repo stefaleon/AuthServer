@@ -27,23 +27,23 @@ exports.postSignUp = (req, res, next) => {
       .genSalt(10)
       .then(salt => {
         bcrypt.hash(password, salt).then(hashedPassword => {
-          user.password = hashedPassword;
+          const user = new User({
+            email,
+            password: hashedPassword
+          });
+
+          user.save(err => {
+            if (err) {
+              return next(err);
+            }
+            res.json({
+              "sign-up-success": `Added user with email ${user.email}`
+            });
+          });
         });
       })
       .catch(err => {
         return next(err);
       });
-
-    const user = new User({
-      email,
-      password
-    });
-
-    user.save(err => {
-      if (err) {
-        return next(err);
-      }
-      res.json({ "sign-up-success": `Added user with email ${user.email}` });
-    });
   });
 };
