@@ -11,7 +11,7 @@ router.post("/sign-up", authController.postSignUp);
 
 // router.get("/log-in", authController.getLogIn);
 
-// router.post("/log-in", authController.postLogIn);
+router.post("/log-in", authController.postLogIn);
 
 // router.post("/log-out", authController.postLogOut);
 
